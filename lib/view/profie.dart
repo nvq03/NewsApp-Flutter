@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:google_login/model/user.dart';
 import 'package:google_login/view/login.dart';
 import 'package:google_login/view/signin.dart';
 import 'package:google_login/viewmodel/FirebaseService.dart';
@@ -15,6 +17,36 @@ class _ProfileState extends State<Profile> {
 
   final FirebaseAuth auth = FirebaseAuth.instance;
   FirebaseService firebaseService = FirebaseService();
+
+
+     String userId = ''; // Lưu UID của người dùng đã đăng nhập
+  Users? currentUser; // Lưu thông tin người dùng từ Realtime Database
+
+  @override
+  void initState() {
+    super.initState();
+    _getCurrentUser();
+  }
+
+  Future<void> _getCurrentUser() async {
+    final user = await FirebaseService().currentUser;
+    if (user != null) {
+      setState(() {
+        userId = user.uid;
+      });
+      _loadUserDataFromDatabase();
+    }
+  }
+
+  Future<void> _loadUserDataFromDatabase() async {
+    final databaseRef = FirebaseDatabase.instance.ref('user/$userId');
+    final snapshot = await databaseRef.once();
+    if (snapshot.snapshot.value != null) {
+      setState(() {
+        currentUser = Users.fromJson(Map<String, dynamic>.from(snapshot.snapshot.value as Map));
+      });
+    }
+  }
 
     Future<void> signOut() async {
     try {
@@ -45,9 +77,9 @@ class _ProfileState extends State<Profile> {
                    Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Username",style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, fontFamily: 'Lexend'),),
+                      Text(currentUser?.username ?? 'username',style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, fontFamily: 'Lexend'),),
                       SizedBox(height: 5,),
-                      Text("Email",style: TextStyle(color: Color(0xFF848484),fontSize: 18, fontFamily: 'Poppins'),)
+                      Text(currentUser?.email ?? 'email',style: TextStyle(color: Color(0xFF848484),fontSize: 18, fontFamily: 'Poppins'),)
                     ],
                    )
                 ],

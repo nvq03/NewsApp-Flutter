@@ -28,7 +28,7 @@ class _SigninState extends State<Signin> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                  SizedBox(height: 10,),
+                  SizedBox(height: 25,),
                   Container(
                     margin: EdgeInsets.only(left: 10),
                     width: 220,

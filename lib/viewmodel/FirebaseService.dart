@@ -82,6 +82,7 @@ import 'package:firebase_database/firebase_database.dart';
 
     return UserCredential;
   }
+  
 
   Future<void> logout()async {
     await auth.signOut();

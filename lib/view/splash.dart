@@ -16,10 +16,10 @@ class _SplashState extends State<Splash> {
   FirebaseService firebaseService = FirebaseService();
 
       @override
-  void setState(VoidCallback fn) {
-    _checkLoggedInUser();
-    super.setState(fn);
-  }
+      void initState() {
+        super.initState();
+        _checkLoggedInUser();
+      }
 
     Future<void> _checkLoggedInUser() async {
     final user = await firebaseService.currentUser;
@@ -45,7 +45,7 @@ class _SplashState extends State<Splash> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: 20,),
+              SizedBox(height: 30,),
                 SizedBox(
                   width: 220,
                   child: Text('Entertaiment Application', 
