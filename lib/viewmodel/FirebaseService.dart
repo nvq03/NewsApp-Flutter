@@ -26,8 +26,29 @@ import 'package:firebase_database/firebase_database.dart';
         idToken: googleAuth?.idToken,
       );
 
+              // Sign in with the credential
+        UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
+
+
+              // Get the user's profile information, including the display name and email
+        User? user = userCredential.user;
+        String? displayName = user?.displayName;
+        String? email = user?.email;
+
+        // Create a new Users object with the user's information
+        Users newUser = Users(
+          username: displayName,
+          email: email,
+          password: '', // Google sign-in doesn't have a password
+        );
+
+        // Save the user's information to the Realtime Database
+        final databaseRef = FirebaseDatabase.instance.ref('user/${user?.uid}');
+        await databaseRef.set(newUser.toJson());
+
       // Once signed in, return the UserCredential
       return await FirebaseAuth.instance.signInWithCredential(credential);
+
     }
 
   // Đăng ký người dùng

@@ -71,8 +71,8 @@ class _ProfileState extends State<Profile> {
                 SizedBox(height: 20,),
                 Row(children: [
                    ClipRRect(
-                      borderRadius: BorderRadius.circular(20.0),
-                    child: Image.asset('assets/user.png', width: 80,height: 80,)),
+                    borderRadius: BorderRadius.circular(20.0),
+                    child: Image.asset('assets/user.png',width: 80, height: 80,  ),),
                    SizedBox(width: 20,),
                    Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
